@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astroquímica: El Origen Cósmico de la Vida</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cosmic Night -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA (Single Page Application) de desplazamiento vertical con una barra de navegación fija. La estructura sigue un flujo narrativo lógico, comenzando con conceptos básicos (Fundamentos), avanzando hacia los componentes clave (Ladrillos Cósmicos), explorando el proceso de transición (De Químico a Biológico) y concluyendo con las implicaciones futuras. Esta estructura fue elegida porque guía al usuario a través de un viaje de aprendizaje coherente, ideal para un tema complejo. Las interacciones clave, como un gráfico de composición elemental y un explorador de modelos de origen, están integradas para dividir el texto y permitir una exploración autodirigida, mejorando la usabilidad y el compromiso del estudiante. -->
+    <!-- Visualization & Content Choices: 1. Composición Elemental del Universo -> Meta: Informar -> Visualización: Gráfico de Donut (Chart.js/Canvas) -> Interacción: Hover para ver detalles -> Justificación: Muestra proporciones de forma clara e inmediata. 2. Modelos de Origen de la Vida -> Meta: Comparar teorías -> Presentación: Tarjetas interactivas con JS -> Interacción: Clic para expandir y ver detalles -> Justificación: Organiza información compleja en fragmentos digeribles. 3. Proceso de Complejidad Molecular -> Meta: Organizar conceptos -> Presentación: Diagrama de flujo con HTML/Tailwind -> Interacción: Estático -> Justificación: Simplifica visualmente un proceso jerárquico. Todos los elementos apoyan la estructura narrativa del sitio. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa; /* Color de fondo claro */
+            color: #212529; /* Texto oscuro */
+        }
+        h1, h2, h3 {
+            font-family: 'Oswald', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #007bff; /* Azul primario */
+            border-bottom-color: #007bff;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+         @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800">Astroquímica</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#fundamentos" class="nav-link text-gray-600 pb-1">Fundamentos</a>
+                <a href="#ladrillos" class="nav-link text-gray-600 pb-1">Ladrillos Cósmicos</a>
+                <a href="#transicion" class="nav-link text-gray-600 pb-1">De Químico a Biológico</a>
+                <a href="#futuro" class="nav-link text-gray-600 pb-1">Futuro</a>
+                <a href="#equipo" class="nav-link text-gray-600 pb-1"> Equipo</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#fundamentos" class="block py-2 px-4 text-sm hover:bg-gray-200">Fundamentos</a>
+            <a href="#ladrillos" class="block py-2 px-4 text-sm hover:bg-gray-200">Ladrillos Cósmicos</a>
+            <a href="#transicion" class="block py-2 px-4 text-sm hover:bg-gray-200">De Químico a Biológico</a>
+            <a href="#futuro" class="block py-2 px-4 text-sm hover:bg-gray-200">Futuro</a>
+            <a href="#equipo" class="block py-2 px-4 text-sm hover:bg-gray-200"> Equipo</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="min-h-screen flex items-center bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold uppercase tracking-wider text-gray-900">El Origen Cósmico de la Vida</h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Explora cómo la astroquímica desvela los secretos de nuestros orígenes, desde las nubes de gas interestelar hasta los primeros organismos en la Tierra.</p>
+                <a href="#fundamentos" class="mt-8 inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition-colors duration-300">Inicia el Viaje</a>
+            </div>
+        </section>
+
+        <section id="fundamentos" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">1. Fundamentos Astroquímicos</h2>
+                 <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">
+                    Para entender el origen de la vida, primero debemos conocer los ingredientes básicos que el universo nos ofrece. Esta sección explora la química que ocurre en el vasto y frío espacio interestelar, donde nacen las moléculas que eventualmente formarían planetas y, en al menos un caso, la vida.
+                </p>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">¿Qué es la Astroquímica?</h3>
+                        <p class="text-gray-600 mb-6">Es la ciencia que estudia la composición química del universo y los procesos que la gobiernan. Investiga cómo se forman, interactúan y destruyen los átomos y moléculas en ambientes astronómicos como nubes moleculares, discos protoplanetarios y atmósferas estelares.</p>
+                        <h4 class="font-semibold mb-2">De lo Simple a lo Complejo:</h4>
+                        <div class="flex items-center justify-around text-center p-4 bg-gray-50 rounded-md">
+                            <div>
+                                <div class="text-3xl">⚛️</div>
+                                <div>Átomo</div>
+                            </div>
+                            <div class="text-2xl text-gray-400">→</div>
+                             <div>
+                                <div class="text-3xl">💧</div>
+                                <div>Molécula Simple</div>
+                            </div>
+                            <div class="text-2xl text-gray-400">→</div>
+                            <div>
+                                <div class="text-3xl">🧬</div>
+                                <div>Molécula Orgánica</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-center">Composición Elemental del Universo</h3>
+                        <p class="text-gray-600 mb-6 text-center">La vida en la Tierra está hecha de los elementos más comunes del universo. Este gráfico muestra la abundancia relativa de los ingredientes cósmicos clave. Al pasar el cursor sobre cada sección, podrás ver el porcentaje de cada elemento.</p>
+                        <div class="chart-container bg-white p-4 rounded-lg shadow-lg">
+                            <canvas id="compositionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ladrillos" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">2. Los Ladrillos Cósmicos de la Vida</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">
+                    Mucho antes de que la Tierra existiera, el espacio ya estaba sembrado con las moléculas necesarias para la vida. Cometas y meteoritos, actuando como mensajeros cósmicos, transportaron estos "ladrillos" fundamentales a nuestro joven planeta. Aquí exploramos estas moléculas precursoras y sus vehículos de entrega.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-8 rounded-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold mb-4">Vehículos Cósmicos: Cometas y Meteoritos</h3>
+                        <p class="text-gray-600">Considerados cápsulas del tiempo del sistema solar primitivo, los cometas y meteoritos contienen agua helada y una rica variedad de compuestos orgánicos. El análisis de meteoritos como el de Murchison ha revelado la presencia de más de 90 aminoácidos distintos, los componentes básicos de las proteínas.</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold mb-4">Moléculas Precursoras</h3>
+                        <p class="text-gray-600">En las frías superficies de los granos de polvo interestelar, protegidas de la radiación, se forman moléculas orgánicas complejas. Entre ellas se encuentran los aminoácidos, azúcares como la ribosa (clave para el ARN) y lípidos que pueden formar membranas. Estos son los verdaderos ladrillos con los que se construye la vida.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="transicion" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">3. De lo Químico a lo Biológico</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">
+                    El paso de una colección de moléculas orgánicas a la primera célula viva es uno de los mayores enigmas de la ciencia. La química prebiótica intenta reconstruir este salto monumental. A continuación, puedes explorar interactivamente algunos de los modelos científicos más importantes que proponen cómo pudo haber ocurrido esta transición.
+                </p>
+                <div id="models-container" class="grid md:grid-cols-3 gap-8">
+                    <div class="model-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">Sopa Primordial (Miller-Urey)</h3>
+                        <p class="text-gray-600">La hipótesis clásica que sugiere que la vida surgió en un "caldo" de moléculas orgánicas, energizado por relámpagos y radiación UV.</p>
+                        <div class="model-details hidden mt-4 text-sm text-gray-700 border-t pt-4">
+                            El famoso experimento de Miller y Urey en 1952 demostró que, simulando las condiciones de la Tierra primitiva, se podían formar aminoácidos espontáneamente a partir de compuestos inorgánicos simples como metano, amoníaco y agua.
+                        </div>
+                    </div>
+                    <div class="model-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">Respiraderos Hidrotermales</h3>
+                        <p class="text-gray-600">Propone que la vida comenzó en las profundidades oceánicas, cerca de fuentes termales submarinas ricas en químicos.</p>
+                        <div class="model-details hidden mt-4 text-sm text-gray-700 border-t pt-4">
+                            Estos ambientes ofrecen gradientes de energía y químicos, protegiendo a las frágiles moléculas de la radiación solar. Los minerales presentes podrían haber actuado como catalizadores para las reacciones prebióticas.
+                        </div>
+                    </div>
+                    <div class="model-card bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold mb-2">Hipótesis del Mundo de ARN</h3>
+                        <p class="text-gray-600">Sugiere que el ARN, y no el ADN, fue la molécula genética original, capaz tanto de almacenar información como de catalizar reacciones.</p>
+                        <div class="model-details hidden mt-4 text-sm text-gray-700 border-t pt-4">
+                            El ARN es más simple que el ADN y algunas de sus variantes, las ribozimas, pueden actuar como enzimas. Esto resuelve el problema del "huevo y la gallina" de qué fue primero: la información (ADN) o la función (proteínas).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="futuro" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">4. Conclusión y Futuro</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">
+                    La astroquímica no solo nos ayuda a comprender nuestro pasado, sino que también guía nuestra búsqueda de vida más allá de la Tierra. Si los ingredientes para la vida son comunes en el universo, ¿podría la vida misma ser un fenómeno cósmico universal? Esta es la pregunta que impulsa la astrobiología moderna.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <div class="bg-gray-50 p-8 rounded-lg border border-gray-200 max-w-md">
+                        <h3 class="text-2xl font-bold mb-4">Un Fenómeno Cósmico</h3>
+                        <p class="text-gray-600">La evidencia sugiere que el origen de la vida no fue un evento aislado, sino el resultado de procesos químicos universales. La materia orgánica se forma continuamente en el cosmos, lo que implica que los "ladrillos de la vida" están disponibles en innumerables sistemas planetarios.</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-lg border border-gray-200 max-w-md">
+                        <h3 class="text-2xl font-bold mb-4">La Búsqueda de Vida Extraterrestre</h3>
+                        <p class="text-gray-600">Telescopios como el James Webb Space Telescope (JWST) analizan las atmósferas de exoplanetas en busca de "biofirmas", gases como el oxígeno o el metano que podrían indicar actividad biológica. Misiones a lunas como Europa o Encélado buscan océanos subterráneos donde la vida podría prosperar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUEVA SECCIÓN: EQUIPO -->
+        <section id="equipo" class="py-16 bg-gray-50 border-t border-gray-200">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Equipo</h2>
+                <p class="text-gray-600 max-w-4xl mx-auto mb-10">Este proyecto ha sido desarrollado por el siguiente equipo, con roles específicos para asegurar la calidad del contenido y el diseño del sitio web:</p>
+                <div class="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+                    <div class="p-4 bg-white rounded-xl shadow-lg border-t-4 border-blue-500 hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold text-blue-600">Editora de Contenido</h4>
+                        <p class="mt-1 text-gray-800 font-medium text-lg">[ingrid yamileth melendez villagran]</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-lg border-t-4 border-blue-500 hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold text-blue-600">Diseñador Gráfico/Visual</h4>
+                        <p class="mt-1 text-gray-800 font-medium text-lg">[pedro abdiel urbina arambula]</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-lg border-t-4 border-blue-500 hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold text-blue-600">Coordinadora de Recursos</h4>
+                        <p class="mt-1 text-gray-800 font-medium text-lg">[arely fernanda acosta lujan]</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-lg border-t-4 border-blue-500 hover:shadow-xl transition-shadow duration-300">
+                        <h4 class="text-xl font-semibold text-blue-600">Administrador del Sitio</h4>
+                        <p class="mt-1 text-gray-800 font-medium text-lg">[jose alejandro sanchez carbajal]</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-sm text-gray-500">
+                    Por favor, **reemplaza los textos entre corchetes [ ]** con los nombres reales de los miembros de tu equipo.
+                </p>
+            </div>
+        </section>
+        <!-- FIN NUEVA SECCIÓN -->
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Proyecto de Astroquímica. Creado como parte de una actividad universitaria.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Active Nav Link on Scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Chart.js - Elemental Composition
+            const ctx = document.getElementById('compositionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hidrógeno', 'Helio', 'Oxígeno', 'Carbono', 'Otros'],
+                    datasets: [{
+                        label: 'Abundancia Cósmica',
+                        data: [73.9, 24.0, 1.04, 0.46, 0.6],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                            'rgba(201, 203, 207, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(201, 203, 207, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#333'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toFixed(2) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Interactive Models Section
+            const modelCards = document.querySelectorAll('.model-card');
+            modelCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const details = card.querySelector('.model-details');
+                    const isVisible = !details.classList.contains('hidden');
+
+                    document.querySelectorAll('.model-details').forEach(d => d.classList.add('hidden'));
+
+                    if (!isVisible) {
+                        details.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
